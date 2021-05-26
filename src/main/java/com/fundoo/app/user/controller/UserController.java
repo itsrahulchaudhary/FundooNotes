@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fundoo.app.user.dto.LoginDTO;
 import com.fundoo.app.user.dto.UserDTO;
+import com.fundoo.app.user.model.User;
 import com.fundoo.app.user.service.IUserServices;
 
 
@@ -23,10 +25,16 @@ public class UserController {
     private IUserServices userServices;
 	
 	@PostMapping("/register")
-	public String register(@RequestBody UserDTO userDTO) {
-		userServices.register(userDTO);
-		return "success !!!";
-	}
+	public User register(@RequestBody UserDTO userDTO) {
 		
+		return userServices.register(userDTO);
+	}
+
+	@PostMapping("/login")
+	public String login(@RequestBody LoginDTO loginDTO) {
+		
+		return userServices.login(loginDTO);
+		
+	}
 
 }
