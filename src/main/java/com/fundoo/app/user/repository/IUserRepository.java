@@ -11,6 +11,10 @@ import com.fundoo.app.user.model.User;
 public interface IUserRepository extends JpaRepository<User, Long>{
 	
 	public Optional<User> findByEmail(String email);
+	// Optional<User> findByUserId(String id);
+	 Optional<User> findById(long id);
+	
+
 
 
 }

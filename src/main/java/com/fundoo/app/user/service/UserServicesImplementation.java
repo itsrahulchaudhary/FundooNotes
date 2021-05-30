@@ -1,5 +1,7 @@
 package com.fundoo.app.user.service;
 
+import java.io.UnsupportedEncodingException;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -8,18 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.fundoo.app.LoginException;
+ 
+import com.fundoo.app.exception.LoginException;
+import com.fundoo.app.exception.RegistrationException;
 import com.fundoo.app.response.Response;
 import com.fundoo.app.response.ResponseToken;
 import com.fundoo.app.user.dto.LoginDTO;
 import com.fundoo.app.user.dto.UserDTO;
+import com.fundoo.app.user.model.Email;
 import com.fundoo.app.user.model.User;
 import com.fundoo.app.user.repository.IUserRepository;
 import com.fundoo.app.utility.JWTToken;
+import com.fundoo.app.utility.MailService;
 import com.fundoo.app.utility.StatusHelper;
 
 @Service("userService")
 public class UserServicesImplementation implements IUserServices{
+	
+	@Autowired
+	private MailService mailServise;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -35,11 +44,33 @@ public class UserServicesImplementation implements IUserServices{
 
 	@Override
 	public Response register(UserDTO userDTO) {
+		Email email = new Email();
 		Response response = null;
+		Optional<User> avaiability = userRepository.findByEmail(userDTO.getEmail());
+		System.out.println("em "+userDTO.getEmail());
+		if(avaiability.isPresent()) {
+			throw new RegistrationException("User exixts", -2);
+		}
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		User user = modelMapper.map(userDTO, User.class);
 		user.setRegisteredDate(LocalDate.now());
-		userRepository.save(user);
+		User saveResponse = userRepository.save(user);
+		if(saveResponse == null) {
+			throw new RegistrationException("Data is not saved in database", -2);
+		}
+		email.setFrom("fundoonote101@gmail.com");
+		email.setTo(userDTO.getEmail());
+		email.setSubject("Email Verification ");
+		try {
+			email.setBody(mailServise.getLink("http://localhost:8080/user/emailvalidation/",  String.valueOf(saveResponse.getUserId())));
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mailServise.send(email);
 		response = StatusHelper.statusInfo("status.register.success",200);
 		return response;
 	}
@@ -62,6 +93,19 @@ public class UserServicesImplementation implements IUserServices{
 			throw new LoginException("Invalid EmailId ", -3);
 		}
 
+	}
+
+	@Override
+	public Response validateEmail(String token) {
+		Response response = null;
+		String id = jWTToken.verifyToken(token);
+		Optional<User> user = userRepository.findById(Integer.parseInt(id));
+		if (user.isPresent()) {
+			response = StatusHelper.statusInfo("status.email.verified", 200);
+			return response;
+		} else {
+			throw new LoginException("EmailId is not verified", -3);
+		}
 	}
 
 }

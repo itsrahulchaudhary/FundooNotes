@@ -1,4 +1,4 @@
-package com.fundoo.app;
+package com.fundoo.app.exception;
 
 public class LoginException extends RuntimeException{
 

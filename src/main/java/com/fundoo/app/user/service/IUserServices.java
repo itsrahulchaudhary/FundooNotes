@@ -12,5 +12,6 @@ import com.fundoo.app.user.dto.UserDTO;
 public interface IUserServices {
 	public Response register(UserDTO userDTO);
 	public ResponseToken login(LoginDTO loginDTO);
+	public Response validateEmail(String token);
 
 }

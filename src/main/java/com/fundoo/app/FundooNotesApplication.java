@@ -7,6 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.fundoo.app.response.Response;
+ 
+
+ 
+
 @SpringBootApplication
 public class FundooNotesApplication {
 
@@ -22,4 +27,11 @@ public class FundooNotesApplication {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Bean
+	public Response getResponse() {
+		return new Response();
+	}
+	 
+	
 }
