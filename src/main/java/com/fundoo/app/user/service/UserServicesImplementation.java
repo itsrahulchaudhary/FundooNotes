@@ -55,6 +55,9 @@ public class UserServicesImplementation implements IUserServices{
 		User user = modelMapper.map(userDTO, User.class);
 		user.setRegisteredDate(LocalDate.now());
 		User saveResponse = userRepository.save(user);
+		System.out.println("Magic app : test1");
+		System.out.println("Magic app : test2");
+		System.out.println("Magic app : test3");
 		if(saveResponse == null) {
 			throw new RegistrationException("Data is not saved in database", -2);
 		}
