@@ -67,6 +67,8 @@ public class UserServicesImplementation implements IUserServices{
 		email.setFrom("fundoonote101@gmail.com");
 		email.setTo(userDTO.getEmail());
 		email.setSubject("Email Verification ");
+		System.out.println("App : test2");
+		System.out.println("App : test2");
 		for(int i=1; i<=10; i++) {
 			System.out.println("Loop "+i);
 		}
