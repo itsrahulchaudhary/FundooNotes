@@ -69,6 +69,9 @@ public class UserServicesImplementation implements IUserServices{
 		email.setSubject("Email Verification ");
 		System.out.println("App : test2");
 		System.out.println("App : test2");
+		for(int i=1; i<=10; i++) {
+			System.out.println("Loop "+i);
+		}
 		try {
 			email.setBody(mailServise.getLink("http://localhost:8080/user/emailvalidation/",  String.valueOf(saveResponse.getUserId())));
 		} catch (IllegalArgumentException e) {
