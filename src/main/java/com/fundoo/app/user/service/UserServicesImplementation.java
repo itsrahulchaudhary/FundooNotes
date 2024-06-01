@@ -61,6 +61,7 @@ public class UserServicesImplementation implements IUserServices{
 		System.out.println("Magic app : test1");
 		System.out.println("Magic app : test2");
 		System.out.println("Magic app : test3");
+		System.out.println("Lala Ji : test4");
 		if(saveResponse == null) {
 			throw new RegistrationException("Data is not saved in database", -2);
 		}
