@@ -117,6 +117,7 @@ public class UserServicesImplementation implements IUserServices{
 		if (user.isPresent()) {
 			response = StatusHelper.statusInfo("status.email.verified", 200);
 			return response;
+			//jjkk
 		} else {
 			throw new LoginException("EmailId is not verified", -3);
 		}
