@@ -39,6 +39,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<ResponseToken> login(@RequestBody LoginDTO loginDTO) {
+		System.out.println("master login");
 		ResponseToken statusResponse = userServices.login(loginDTO);
 		return new ResponseEntity<ResponseToken>(statusResponse, HttpStatus.OK);
 	}
