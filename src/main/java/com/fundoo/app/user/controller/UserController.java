@@ -31,6 +31,7 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<Response> register(@RequestBody UserDTO userDTO) {
+		System.out.println("testing ....");
 		Response statusResponse = userServices.register(userDTO);
 		return new ResponseEntity<Response>(statusResponse, HttpStatus.OK);
 	}
